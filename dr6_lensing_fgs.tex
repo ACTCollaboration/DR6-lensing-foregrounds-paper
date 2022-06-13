@@ -1,0 +1,334 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+\usepackage{bm}	
+\usepackage{url}
+
+\newcommand{\snr}{\ensuremath{S/N}}
+\newcommand{\unitvec}{\ensuremath{\hat{\mathbf{n}}}}
+\newcommand{\dx}[1]{\mathrm{d}{#1}\,}
+\newcommand{\Cltot}[1]{C_{#1}^{\mathrm{tot}}}
+\newcommand{\Clfg}[1]{C_{#1}^{\mathrm{fg}}}
+\newcommand{\Clmap}[1]{C_{#1}^{\mathrm{map}}}
+\newcommand{\Clhatphi}[1]{C_{#1}^{\hat{\phi}\hat{\phi}}}
+\newcommand{\CLhatphiX}[1]{C_{L}^{\hat{\phi},#1}}
+\newcommand{\Clphi}[1]{C_{#1}^{\phi\phi}}
+\newcommand{\hatkappa}{\hat{\kappa}}
+\newcommand{\vecl}{\mathbf{l}}
+\newcommand{\veclp}{\mathbf{l}'}
+\newcommand{\vecL}{\mathbf{L}}
+\newcommand{\Tfg}{T^{\mathrm{fg}}}
+\newcommand{\Tcmb}{T_{\mathrm{CMB}}}
+\newcommand{\DTfg}{\Delta T^{\mathrm{fg}}}
+\newcommand{\DTcmb}{\Delta T_{\mathrm{CMB}}}
+\newcommand{\Aphi}{A^{\phi}}
+\newcommand{\fsky}{f_{\mathrm{sky}}}
+\newcommand{\Alens}{A_{\mathrm{lens}}}
+\newcommand{\Xcmb}{X_{\mathrm{CMB}}}
+\newcommand{\Ycmb}{Y_{\mathrm{CMB}}}
+\newcommand{\Pcmb}{P_{\mathrm{CMB}}}
+\newcommand{\Qcmb}{Q_{\mathrm{CMB}}}
+\newcommand{\Ecmb}{E_{\mathrm{CMB}}}
+\newcommand{\Xf}{X_{\mathrm{f}}}
+\newcommand{\Yf}{Y_{\mathrm{f}}}
+\newcommand{\Pf}{P_{\mathrm{f}}}
+\newcommand{\Qf}{Q_{\mathrm{f}}}
+\newcommand{\Tf}{T_{\mathrm{f}}}
+\newcommand{\Ef}{E_{\mathrm{f}}}
+
+\newcommand\eqn[1]{equation~\ref{#1}}
+\newcommand\eqnb[2]{equations~\ref{#1}~\& \ref{#2}}
+\newcommand\eqnc[2]{equations~\ref{#1}--\ref{#2}}
+\newcommand\Eqn[1]{Equation~\ref{#1}}   % If you need to start a sentence with this...
+\newcommand\Eqnb[2]{Equations~\ref{#1}~\& \ref{#2}}
+\newcommand{\ec}[1]{Eq.~(\ref{eq:#1})}
+\newcommand{\eec}[2]{Eqs.~(\ref{eq:#1}) and (\ref{eq:#2})}
+\newcommand{\Ec}[1]{(\ref{eq:#1})}
+\newcommand{\eql}[1]{\label{eq:#1}}
+
+% Likewise for figures and tables
+\newcommand\fig[1]{Figure~\ref{#1}}
+\newcommand\figb[2]{Figures~\ref{#1}~\& \ref{#2}}
+\newcommand\chap[1]{Chapter~\ref{#1}}
+\newcommand\sect[1]{Section~\ref{#1}}
+\newcommand\tab[1]{Table~\ref{#1}}
+\newcommand\app[1]{Appendix~\ref{#1}}
+\newcommand\todo[1]{\textcolor{red}{#1}}
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+% \usepackage{amssymb}	% Extra maths symbols
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[DR6 Lensing foregrounds]{DR6 Lensing foregrounds}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[the authors]{The authors}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2015}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+Where we convince you that extragalactic foregrounds are not biasing the amazing ACT DR6 cosmology constraints. 
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+keyword1 -- keyword2 -- keyword3
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+\section{Formalism and Methods}
+
+\subsection{Quadratic Estimator}
+
+\todo{use curved-sky equations?}
+
+We reconstruct the lensing potential via the quadratic estimator 
+\begin{equation}
+    \hat{\phi}_{\vecL} = \frac{1}{2} \Aphi_L \int \frac{\dx{^2\vecl}}{(2\pi)^2}  \frac{f_{\vecL,\vecl} T_{\vecl}T_{\vecL-\vecl}}{\Cltot{l}\Cltot{|\vecL-\vecl|}}
+\end{equation}
+where
+\begin{equation}
+    \Aphi_{\vecL} = \left[ \int \frac{\dx{^2\vecl}}{(2\pi)^2} \frac{f_{\vecL,\vecl}^2}{2\Cltot{l}\Cltot{|\vecL-\vecl|}} \right]^{-1}
+\end{equation}
+and 
+\begin{equation}
+    f_{\vecL,\vecl} = \tilde{C}_l\vecl.\vecL + \tilde{C}_{|\vecL-\vecl|}\vecL.|\vecL-\vecl|.
+    \label{eq:fphi}
+\end{equation}
+Here $\tilde{C}_l$ is the lensed CMB temperature power spectrum, while $\Cltot{l}$ is the total observed CMB power spectrum (i.e. including noise).
+
+The estimator has an $N^0$ bias, which is the expectation for a Gaussian field, that is equal to $A_{\vecL}$. 
+
+\subsection{Foreground biases}\label{sec:fg_biases}
+
+Foregrounds contaminate the temperature as 
+\begin{equation}
+    \Delta T(\vecl) = \DTcmb(\vecl) + \DTfg(\vecl)
+\end{equation}
+Denoting a symmetric quadratic estimator on two temperature maps $A$ and $B$ as $Q(T^A, T^B)$, the contamination of $C_L^{\hat{\phi}\hat{\phi}}$ is
+\begin{align}
+    \Delta \Clhatphi{L}
+    &= 2\left<Q(\Tfg,\Tfg) \phi \right>_L\\
+    &+ 4\left<Q(\Tfg, \Tcmb)Q(\Tfg, \Tcmb)\right>\\
+    &+ \left<Q(\Tfg,\Tfg)Q(\Tfg,\Tfg)\right>
+\end{align}
+The first and second terms are known as the \emph{primary} and \emph{secondary} \emph{bispectrum} terms respectively (since they depend on bispectra involving $\Tfg$ and $\phi$), while the third term is known as the tripsectrum contribution, since it depends only on the trispectrum of $\Tfg$.
+
+Given a simulation of $\Tfg$ and $\phi$, we can estimate these terms individually, and without noise from the primary CMB,  following \citet{Schaan_2019}. In this case the tripsectrum has an $N^0$ bias that we must subtract; this is given by
+\begin{equation}
+    N^{0,\mathrm{fg}}_{L} =  A_L^2 \int \frac{\dx{^2\vecl}}{(2\pi)^2}  \frac{f_{\vecL,\vecl}^2 C^{\mathrm{fg}}_l C^{\mathrm{fg}}_{|\vecL-\vecl|}}{2(C_l^{\mathrm{tot}}C_{|\vecL-\vecl|}^{\mathrm{tot}})^2}
+    \label{eq:N0fg}
+\end{equation}
+Note that the integral here is the same as for $\Aphi_L$, but replacing $\Cltot{l}$ with $(\Cltot{l})^2 / \Clfg{l}$.
+
+\subsection{Bias-hardened estimators}
+
+In general a bias-hardened estimator for a field $x(\vecL)$ in the presence of a contaminant $y(\vecL)$ is 
+\begin{equation}
+    x_{\vecL} = \frac{\hat{x}_{\vecL}-A^x_{\vecL} R^{xy}_{\vecL}\hat{y}(\vecL)}{1-A^x_{\vecL}N^{y}_{\vecL} (R^{xy}_{\vecL})^2}
+\end{equation}
+where $\hat{x}(\vecL)$ is the non-hardened estimator,
+\begin{equation}
+    R_{\vecL}^{xy} = \int \frac{\dx{^2\vecl}}{(2\pi)^2} \frac{f^{y}_{\vecL,\vecl} f^{x}_{\vecL,\vecl}}{2\Cltot{l}\Cltot{|\vecL-\vecl|}}
+\end{equation}
+and $A^{x}_{\vecL}$ is the estimator normalization, given by $1/R_{\vecL}^{xx}$. Here $f^{x}$ and $f^{y}$ are functions which describe the mode-coupling induced by the fields $x$ and $y$. For lensing, this is given by \eqn{eq:fphi}, for point-sources, it is a constant. One can also harden against Poisson distributed sources with some (Fourier transformed) radial profile $u(\vecl)$, in this case, 
+\begin{equation}
+    f_{\vecl,\vecL-\vecl} = \frac{u(\vecl)u(\vecL-\vecl)}{u(\vecL)}
+\end{equation}
+
+There is a noise cost to doing bias-hardening, with the $N^0$ of the bias-hardened estimator given by
+\begin{equation}
+    N^{0,x,BH} = N^{0,x} / (1 - N^{0,x} N^{0,y} (R^{xy})^2)
+\end{equation}
+
+When computing the foreground tripsectrum contamination, we again need to subtract an $N^{0}$ contribution, which is a little more complex in the bias-hardened case, given by
+\begin{equation}
+    N^{0,\mathrm{fg,BH}} = 
+\frac{
+    N^{0,\mathrm{fg}} + (A^x)^2 (R^{xy}A^{y} - 2  R^{xy} A^{y}  R^{xy}_{\mathrm{fg}})}{\left[1 - A^x A^y (R^{xy})^2\right]^2}
+\end{equation}
+where $N^{0,\mathrm{fg}}$ is given by \eqn{eq:N0fg} (and is also equal to $(A^x_{\vecL})^2 / R^{xx,\mathrm{fg}}_{\vecL}$) and 
+\begin{equation}
+    R^{xy,\mathrm{fg}} = \int \frac{\dx{^2\vecl}}{(2\pi)^2} \frac{f^{y}_{\vecL,\vecl} f^{x}_{\vecL,\vecl} \Clfg{l}\Clfg{|\vecL-\vecl|}}{2\Cltot{l}\Cltot{|\vecL-\vecl|}}.
+\end{equation}
+
+\subsection{Frequency-cleaned, asymmetric and  symmetrised estimators}
+
+Even for the temperature-only case, We need not use the same two maps in our quadratic estimator - we can also use two temperature maps which have had different levels of foreground cleaning applied, which can result in a better bias-variance trade-off than using the same (noisy) frequency-cleaned temperature map in both legs of the quadratic estimator. Indeed if just one of the maps has zero foreground contamination, we might expect the quadratic estimator to be unbiased by foregrounds (see \citealt{hu07, madhavacheril18, darwish21}).
+
+Our quadratic estimators are not in general symmetric in their arguments i.e. $Q\left[X,Y\right]$ is not in general equal to $Q\left[Y,X\right]$, for $X\neq Y$. \citet{darwish21} therefore propose using a minimum-variance linear combination of the two estimators:
+\begin{equation}
+    \kappa_{\mathrm{sym}}(\vecL) = \bm{W}(\vecL) \begin{pmatrix}
+    \kappa_{XY}(\vecL) \\
+    \kappa_{YX}(\vecL)
+    \end{pmatrix}
+\end{equation}
+where $\bm{W}(\vecL)$ is some weight matrix. We define the matrix 
+\begin{equation}
+    \textbf{N}^0 = \begin{pmatrix}
+N^{0,XYXY} & N^{0,XYYX} \\
+N^{0,YXXY} & N^{0,YXYX}
+\end{pmatrix}
+\end{equation}
+where $N^{0,ABCD}$ is the $N^0$ for the general case of the cross-correlation of $\kappa_{AB}$ and $\kappa_{CD}$, and is given by (see Toshiya's notes).
+
+Then the normalized, minimum variance $\bm{W}(\vecL)$ is given by
+\begin{equation}
+W(\vecL) = \frac{\left(\textbf{N}^0\right)^{-1}}{|\textbf{N}^0|(N^{0,XYXY}-N^{0,YXYX})}
+\end{equation}
+(where we have used that $N^{0,XYYX}=N^{0,YXXY}$).
+
+\section{Simulations}
+\label{sec:sims}
+
+Describe \cite{Sehgal_2010} and \cite{websky} simulations
+
+\section{Simulation processing}
+
+In order to generate realistic estimates of the contamination of the ACT DR6 lensing power spectrum due to extragalactic foregrounds, we need to perform some pre-processing of the microwave sky simulations described in \sect{sec:sims}. 
+\todo{For now just describe the processing for the baseline result}
+For each simulation, we use the following steps:
+
+\begin{enumerate}
+\item{We generate a total foreground map (for each frequency) by summing the contributions from the tSZ, kSZ, CIB and radio point-sources.}
+\item{We then add a realization of the lensed (by the appropriate $\kappa$ field) CMB.}
+\item{We then convolve with a Gaussian beam appropriate for the frequency (with full-width-at-half-maximum (fwhm) = 1.4 and 2.2 arcminutes for 90 and 145 GHZ respectively), and add a random  realization of the instrumental noise with a spatially varying variance appropriate for the white noise level (as estimated by ?) of the DR6 day+night coadded data. Note that this necessarily requires also applying the ACT DR6 mask.}
+\item{We input these simulated maps to the matched-filter source and cluster finding algorithms implemented by \nemo^{\footenote{\url{https://nemo-sz.readthedocs.io/en/latest/}}}\ \cite{Hilton_2021}. We firstly run nemo on each frequency in point-source finding mode with a $\snr>5$ threshold, which outputs a point-source catalog which can be used to generate a point-source model map.}
+\item{We then run nemo in cluster-finding mode (jointly on the 90 and 150 GHz maps), passing the point-source catalog in the config file to be masked during cluster finding. This outputs a cluster catalog that can be used to generate a cluster model map.}
+\end{enumerate}
+
+For the baseline DR6 lensing analysis, point-source models are subtracted at the map level, while clusters are masked and inpainted. Since our foreground bais estimator is applied to foreground-only maps, we subtract from these our point-source model map, and mask the clusters ((i.e. set the foreground-only maps to zero) with the same 6 arcminute radius as used for the masking/inpainting on the real data. Given these foreground-only maps do not contain CMB and instrumental noise, we don't expect significant statistical anisotropy to be introduced by masking without inpainting. 
+
+\section{Foreground biases to $C_L^{\kappa\kappa}$}
+
+Below we present our predicted (from the sims) biases due to extragalactic foregrounds, as a fraction of the signal i.e. $\frac{\Delta \Clhatphi{\vecL}}{\Clhatphi{\vecL}}$. We also show the bias, $b(\Alens)$ in the inferred lensing power spectrum amplitude $\Alens$.
+
+\fig{fig:baseline1} 
+
+
+
+\subsection{Baseline Analysis}
+
+For the lensing power spectrum analysis, we closely follow the analysis choices of \citet{qu22, madhavacheril22}. We coadd the 90 and 150 GHz foreground-only maps with the same $l$-dependent weights used for the real data, and use the same (diagonal) filtering of the maps entering in the quadratic estimator.  We use a bias-hardened quadratic estimator 
+
+
+
+\section*{Acknowledgements}
+
+The Acknowledgements section is not numbered. Here you can thank helpful
+colleagues, acknowledge funding agencies, telescopes and facilities used etc.
+Try to keep it short.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Data Availability}
+
+ 
+The inclusion of a Data Availability Statement is a requirement for articles published in MNRAS. Data Availability Statements provide a standardised format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analysed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required accession numbers for the relevant databases or DOIs.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{refs} % if your bibtex file is called example.bib
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Some extra material}
+
+If you want to present additional material which would interrupt the flow of the main paper,
+it can be placed in an Appendix which appears after the list of references.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex
