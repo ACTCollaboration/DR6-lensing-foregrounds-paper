@@ -69,6 +69,9 @@
 \newcommand{\Tf}{T_{\mathrm{f}}}
 \newcommand{\Ef}{E_{\mathrm{f}}}
 
+%simulations
+\newcommand{\websky}{\textsc{websky}}
+
 \newcommand\eqn[1]{equation~\ref{#1}}
 \newcommand\eqnb[2]{equations~\ref{#1}~\& \ref{#2}}
 \newcommand\eqnc[2]{equations~\ref{#1}--\ref{#2}}
@@ -293,7 +296,7 @@ In the baseline power spectrum analysis of \citet{dr6-lensing-auto,dr6-lensing-c
 
 We perform these same steps on the simulated foreground-only maps used to estimate foreground biases here i.e. we use the same $l$-dependent weights to coadd frequencies, and the same filtering of the maps entering the quadratic estimator (rather than e.g. using the total power spectrum of the foreground maps themselves, since the aim here is to use the same weighting of CMB temperature modes as used in the real data reconstruction).
 
-\fig{fig:
+The purple lines in left panel of \fig{fig:baseline1} shows the predicted bias to the lensing reconstruction power spectrum from temperature data only, as a fraction of the expected signal, for this baseline setup. For both the \websky\  (solid lines) and S10 (dashed lines) simulations, the biases are within 2\% up to $L=600$, which is where most of the \snr\ of the DR6 measurement will come from (the solid, light grey line indicates the cumulative \snr\ as a function of the maximum $L$ included). The biases are also mostly smaller than the uncertainty on the amplitude of the lensing spectrum, $\sigma(\Alens)$, which 3.5\% for temperature-only. 
 
 \begin{center}
 \begin{tabular}{|c |c |c |c|}
