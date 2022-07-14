@@ -264,20 +264,53 @@ For each simulation, we use the following steps:
 \item{We then run nemo in cluster-finding mode (jointly on the 90 and 150 GHz maps), passing the point-source catalog in the config file to be masked during cluster finding. This outputs a cluster catalog that can be used to generate a cluster model map.}
 \end{enumerate}
 
-For the baseline DR6 lensing analysis, point-source models are subtracted at the map level, while clusters are masked and inpainted. Since our foreground bais estimator is applied to foreground-only maps, we subtract from these our point-source model map, and mask the clusters ((i.e. set the foreground-only maps to zero) with the same 6 arcminute radius as used for the masking/inpainting on the real data. Given these foreground-only maps do not contain CMB and instrumental noise, we don't expect significant statistical anisotropy to be introduced by masking without inpainting. 
+For the baseline DR6 lensing analysis, point-source models are subtracted at the map level, while clusters are masked and inpainted. Since our foreground bais estimator is applied to foreground-only maps, we subtract from these our point-source model map, and mask the nemo clusters ((i.e. set the beamed foreground-only maps to zero) with the same 6 arcminute radius as used for the masking/inpainting on the real data. Given these foreground-only maps do not contain CMB and instrumental noise, we don't expect significant statistical anisotropy to be introduced by masking without inpainting. 
 
 \section{Foreground biases to $C_L^{\kappa\kappa}$}
 
-Below we present our predicted (from the sims) biases due to extragalactic foregrounds, as a fraction of the signal i.e. $\frac{\Delta \Clhatphi{\vecL}}{\Clhatphi{\vecL}}$. We also show the bias, $b(\Alens)$ in the inferred lensing power spectrum amplitude $\Alens$.
+Below we present our predicted (from the sims) biases due to extragalactic foregrounds $\Delta \Clhatphi{\vecL}}$. We also show the bias, $\Delta\Alens$ in the inferred lensing power spectrum amplitude $\Alens$, which we approximate as 
+\begin{equation}
+    b(\Alens) = \frac{\sum_L \sigma^{-2}_L \Delta \Clhatphi{L}\Clphi{L}}{\sum_L  (\Clphi{L}/\sigma_L)^2}
+\end{equation}
+for the case of a diagonal covariance matrix on $\Clhatphi{L}$ with diagonal elements $\sigma_L$, and true signal $\Clphi{L}$.
+The uncertainty on $\Alens$ is given by $\left(\sum_L  (\Clphi{L}/\sigma_L)^2\right)^{-0.5}$, so 
+\begin{equation}
+    \frac{b(\Alens)}{\sigma(\Alens)} =
+    \frac{\sum_L \sigma^{-2}_L \Delta \Clhatphi{L}\Clphi{L}}{\sqrt{\sum_L  (\Clphi{L}/\sigma_L)^2}}
+\end{equation}
 
-\fig{fig:baseline1} 
-
-
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figures/websky_sehgal_dr6_biases_LMAX1000.png}
+    \includegraphics[width=0.9\columnwidth]{figures/websky_sehgal_dr6_biases_LMAX1000.png}
+    \caption{Caption}
+    \label{fig:baseline1}
+\end{figure*}
 
 \subsection{Baseline Analysis}
 
-For the lensing power spectrum analysis, we closely follow the analysis choices of \citet{qu22, madhavacheril22}. We coadd the 90 and 150 GHz foreground-only maps with the same $l$-dependent weights used for the real data, and use the same (diagonal) filtering of the maps entering in the quadratic estimator.  We use a bias-hardened quadratic estimator 
+In the baseline power spectrum analysis of \citet{dr6-lensing-auto,dr6-lensing-cosmo}, we perform lensing reconstruction on a weighted coadd the 90 and 150 GHz maps, with each frequency $i$ weighted by the inverse of its 1-dimensional harmonic-space noise power spectrum, $N_l^i$ as estimated from simulations. The coadd is filtered diagonally in harmonic space using the total power spectrum $C_l^{\mathrm{tot},i} = C_l^{\mathrm{cmb}}+N_l^i$, the sum of a fiducial CMB power spectrum and the noise power spectrum, before being passed into the quadratic estimator. 
 
+We perform these same steps on the simulated foreground-only maps used to estimate foreground biases here i.e. we use the same $l$-dependent weights to coadd frequencies, and the same filtering of the maps entering the quadratic estimator (rather than e.g. using the total power spectrum of the foreground maps themselves, since the aim here is to use the same weighting of CMB temperature modes as used in the real data reconstruction).
+
+\fig{fig:
+
+\begin{center}
+\begin{tabular}{|c |c |c |c|}
+\hline
+simulation & analysis version & $\Delta\Alens$x100 & $\sigma(\Alens)$x100\\
+\hline\\
+websky & baseline & 0.08 & 1.97\\
+websky & CIB-deproj & -0.65 & 2.02\\
+sehgal & baseline & -0.05 & 2.06\\
+sehgal & CIB-deproj & -0.63 & 2.11
+\hline
+\end{tabular}
+\end{center}
+
+
+
+\subsection{CIB-deprojected Analysis}
 
 
 \section*{Acknowledgements}
