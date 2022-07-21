@@ -46,6 +46,8 @@
 \newcommand{\Clhatphi}[1]{C_{#1}^{\hat{\phi}\hat{\phi}}}
 \newcommand{\CLhatphiX}[1]{C_{L}^{\hat{\phi},#1}}
 \newcommand{\Clphi}[1]{C_{#1}^{\phi\phi}}
+\newcommand{\ClphiMV}[1]{C_{#1,\mathrm{MV}}^{\phi\phi}}
+\newcommand{\ClphiAB}[1]{C_{#1,\mathrm{AB}}^{\phi\phi}}
 \newcommand{\hatkappa}{\hat{\kappa}}
 \newcommand{\vecl}{\mathbf{l}}
 \newcommand{\veclp}{\mathbf{l}'}
@@ -68,6 +70,10 @@
 \newcommand{\Qf}{Q_{\mathrm{f}}}
 \newcommand{\Tf}{T_{\mathrm{f}}}
 \newcommand{\Ef}{E_{\mathrm{f}}}
+
+%cmb stuff
+\newcommand{\Tcib}{T_{\mathrm{CIB}}}
+\newcommand{\kb}{k_{\mathrm{B}}}
 
 %simulations
 \newcommand{\websky}{\textsc{websky}}
@@ -255,6 +261,8 @@ Describe \cite{Sehgal_2010} and \cite{websky} simulations
 
 \section{Simulation processing}
 
+\subsection{Simulated ACT DR6 maps}
+
 In order to generate realistic estimates of the contamination of the ACT DR6 lensing power spectrum due to extragalactic foregrounds, we need to perform some pre-processing of the microwave sky simulations described in \sect{sec:sims}. 
 \todo{For now just describe the processing for the baseline result}
 For each simulation, we use the following steps:
@@ -269,16 +277,65 @@ For each simulation, we use the following steps:
 
 For the baseline DR6 lensing analysis, point-source models are subtracted at the map level, while clusters are masked and inpainted. Since our foreground bais estimator is applied to foreground-only maps, we subtract from these our point-source model map, and mask the nemo clusters ((i.e. set the beamed foreground-only maps to zero) with the same 6 arcminute radius as used for the masking/inpainting on the real data. Given these foreground-only maps do not contain CMB and instrumental noise, we don't expect significant statistical anisotropy to be introduced by masking without inpainting. 
 
+\subsection{Adding Planck high frequency and harmonic ILC}
+
+As well as our baseline approach which uses only ACT maps, we investigate a frequency cleaning approach, for which it is useful to include high frequency data from Planck (353 and 545 GHz), where the CIB is brighter. To minimize the information on the primary CMB coming from Planck (i.e. to make this a mostly independent of Planck CMB lensing measurement), we do not include lower frequency Planck data. 
+
+To simulate the Planck data, we generate the total foregrounds-only maps at the Planck frequencies, and apply a point-source flux threshold of 304 and 555 mJy to the 353 and 545 GHz channels respectively (taking these thresholds from Table 1 of  \citealt{ade16}). We apply the ACT DR6 analysis mask to isolate the same sky area for the ACT and Planck data. Note that for the S10 simulations, no 545 GHz data was generated, therefore we simply scale the 353 GHz CIB simulation using a spectrum \citep{madhavacheril20} 
+\begin{equation}
+    f_{\mathrm{CIB}}(\nu) \propto 
+    \frac{\nu^{3+\beta}}{\exp{h\nu/k_B \Tcib-1}}
+    \left(\frac{\dx{B}(\vu,T)}{\dx{T}}|_{T=\Tcmb} \right)^{-1}
+    \label{eq:cib_spec}
+\end{equation}
+with $\beta = 1.2$, $\Tcib=24K$ and $B(\nu,T)$ is the Planck function. Note that the CIB does not exactly follow such a spectrum - the use of this rescaling is then a weakness of our S10 result, however, the \websky\ simulations do have a more realistic 545 GHz channel. As for the other foreground components, the tSZ can be accurately scaled to 545 GHz with a spectrum
+\begin{equation}
+    f_{\mathrm{tSZ}}  \propto 
+    \frac{h \vu}{k_B \Tcmb} 
+    \frac{e^{h\vu/k_B \Tcmb + 1}}{e^{h\vu/k_B \Tcmb-1}} - 4,
+    \label{eq:tsz_spec}
+\end{equation}
+kSZ is frequency-independent in CMB units, and radio point-sources can be assumed to have negligble flux contribution at 545 GHz (can we cite something for this?)
+
+We produce harmonic space linear combinations of the maps that i) minimize the variance of the outputs maps ii) additionally deproject one or more foreground components by assuming an $l$-independent spectrum for those foreground components. In our case, those foreground components are the CIB and tSZ, with spectra given by \eqn{eq:cib_spec} \& \eqn{eq:tsz_spec} respectively.
+
+Again, we note that this assumption is only approximate in the case of the CIB. Minimizing the variance requires providing total power and cross-spectra for all the input maps; we construct these for frequencies $i$ and $j$ as
+\begin{equation}
+C_{l,ij}^{\mathrm{total}} = C_l^{\mathrm{cmb}} + C_{l,ij}^{\mathrm{fg}} + \delta_ij N_{l,\mathrm{i}}
+\end{equation}
+where $C_{l,ij}^{\mathrm{fg}}$ is the foreground (cross-)spectrum estimated from the simulation foreground-only maps, and $N_{l,\mathrm{i}}$ is the noise-only power spectrum, estimated from ACT DR6 noise simulations and the Planck noise-only simulations\footnote{available on NERSC at \url{/global/cfs/cdirs/cmb/data/planck2020}} provided with the NPIPE maps \citep{akrami20}, 
+
+Note that since we do not use power spectra measured directly from simulated maps containing lensed CMB signal, we will not incur any \emph{ILC-bias}, which comes from the down-weighting of modes with high signal variance that can occur in an ILC (cite ilc bias). When generating ILC maps on the real DR6 data, we do use power spectra measured directly from the data, but apply aggressive smoothing to avoid this ILC bias. 
+
 \section{Foreground biases to $C_L^{\kappa\kappa}$}
 
-Below we present our predicted (from the sims) biases due to extragalactic foregrounds $\Delta \Clhatphi{\vecL}}$. We also show the bias, $\Delta\Alens$ in the inferred lensing power spectrum amplitude $\Alens$, which we approximate as 
+Below we present our predicted (from the sims) biases due to extragalactic foregrounds $\Delta \Clhatphi{\vecL}}$. We calculate this broadly following the methodology of \citet{Schaan_2019}, who outline how each of the terms: primary bispectrum, secondary bispectrum and trispectrum can be estimated from simulations without noise due to the CMB or instrument noise realisation. The total bias is then simply the sum of these terms.  
+
+We estimate foreground biases for the temperature only case as well as for our \emph{MV} estimator, which the lensing power spectrum estimated from, $\hat{\phi}^{\mathrm{MV}}(\vecL)$, the reconstruction which uses both temperature and polarization data, given by a weighted sum of the reconstructions from all pairs $AB \in \left[TT,TE,TB,EE,EB\right]$:
 \begin{equation}
-    b(\Alens) = \frac{\sum_L \sigma^{-2}_L \Delta \Clhatphi{L}\Clphi{L}}{\sum_L  (\Clphi{L}/\sigma_L)^2}
+    \hat{\phi}^{\mathrm{MV}}(\vecL) = \sum_{AB} w_{AB} \hat{\phi}^{AB}(\vecL).
+\end{equation}
+We weight each $\hat{\phi}^{AB}(\vecL)$ by the inverse of the normalization (which is equivalent to it's response to lensing). The bias on the MV lensing power spectrum estimate is then \citep{darwish21}
+\begin{align}
+\begin{split}
+    \Delta \CLhatphiX{MV} &= 
+    \left[ (w_L^{TT})^2 \Delta \CLhatphiX{TTTT} \right.\\
+ &+ \frac{1}{2}\sum_{XY \in (EE, BB, TE)} w_L^{TT} w_L^{XY} P^{TT}_L\\
+ &+ \left. w_L^{TT}w_L^{TE} S^{TTTE}_L + w_L^{TE}w_L^{TE} S^{TETE}_L\\
+ &+ \left. w_L^{TT}w_L^{TB} S^{TTTB}_L + w_L^{TB}w_L^{TB} S^{TBTB}_L
+ \right].
+\end{split}
+\end{align}
+where $\Delta \CLhatphiX{TTTT}$ is the bias on the temperature-only estimator, $P^{TT}_L$ is the primary bispectrum bias on the temperature-only estimator. There are additional secondary bispectrum terms $S^{TTTE}_L$, $S^{TETE}$, $S^{TTTB}_L$, $S^{TBTB}$ \todo{that we presently ignore as negligible - need to confirm this?}.
+
+We also show the bias, $\Delta\Alens$ in the inferred lensing power spectrum amplitude $\Alens$, which we approximate as 
+\begin{equation}
+    \Delta\Alens = \frac{\sum_L \sigma^{-2}_L \Delta \Clhatphi{L}\Clphi{L}}{\sum_L  (\Clphi{L}/\sigma_L)^2}
 \end{equation}
 for the case of a diagonal covariance matrix on $\Clhatphi{L}$ with diagonal elements $\sigma_L$, and true signal $\Clphi{L}$.
 The uncertainty on $\Alens$ is given by $\left(\sum_L  (\Clphi{L}/\sigma_L)^2\right)^{-0.5}$, so 
 \begin{equation}
-    \frac{b(\Alens)}{\sigma(\Alens)} =
+    \frac{\Delta\Alens}{\sigma(\Alens)} =
     \frac{\sum_L \sigma^{-2}_L \Delta \Clhatphi{L}\Clphi{L}}{\sqrt{\sum_L  (\Clphi{L}/\sigma_L)^2}}
 \end{equation}
 
@@ -296,20 +353,23 @@ In the baseline power spectrum analysis of \citet{dr6-lensing-auto,dr6-lensing-c
 
 We perform these same steps on the simulated foreground-only maps used to estimate foreground biases here i.e. we use the same $l$-dependent weights to coadd frequencies, and the same filtering of the maps entering the quadratic estimator (rather than e.g. using the total power spectrum of the foreground maps themselves, since the aim here is to use the same weighting of CMB temperature modes as used in the real data reconstruction).
 
-The purple lines in left panel of \fig{fig:baseline1} shows the predicted bias to the lensing reconstruction power spectrum from temperature data only, as a fraction of the expected signal, for this baseline setup. For both the \websky\  (solid lines) and S10 (dashed lines) simulations, the biases are within 2\% up to $L=600$, which is where most of the \snr\ of the DR6 measurement will come from (the solid, light grey line indicates the cumulative \snr\ as a function of the maximum $L$ included). The biases are also mostly smaller than the uncertainty on the amplitude of the lensing spectrum, $\sigma(\Alens)$, which 3.5\% for temperature-only. 
+The purple lines in left panel of \fig{fig:baseline1} shows the predicted bias to the lensing reconstruction power spectrum from temperature data only, as a fraction of the expected signal, for this baseline setup. For both the \websky\  (solid lines) and S10 (dashed lines) simulations, the biases are within 2\% up to $L=600$, which is where most of the \snr\ of the DR6 measurement will come from (the solid, light grey line indicates the cumulative \snr\ as a function of the maximum $L$ included). The biases are also mostly smaller than the uncertainty on the amplitude of the lensing spectrum, $\sigma(\Alens)$, which 3.5\% for the temperature-only measurement, 
 
-\begin{center}
-\begin{tabular}{|c |c |c |c|}
+\begin{table*}
+\centering
+\begin{tabular}{|c |c |c |c| c | c |}
 \hline
-simulation & analysis version & $\Delta\Alens$x100 & $\sigma(\Alens)$x100\\
+simulation & analysis version & $\Delta\Alens^{TT}$x100 & $\sigma^{TT}(\Alens)$x100 & $\Delta\Alens^{MV}$x100 & $\sigma^{MV}(\Alens)$x100\\
 \hline\\
-websky & baseline & 0.08 & 1.97\\
-websky & CIB-deproj & -0.65 & 2.02\\
-sehgal & baseline & -0.05 & 2.06\\
-sehgal & CIB-deproj & -0.63 & 2.11
+websky & baseline & 0.09 & 3.44 & 0.07 & 2.20\\
+websky & CIB-deproj & -0.58 & 3.44 & -0.21 & 2.65\\
+sehgal & baseline & -0.04 & 3.64 & -0.01 & 2.31\\
+sehgal & CIB-deproj & -0.58 & 3.64 & -0.22 & 2.78
 \hline
 \end{tabular}
-\end{center}
+\caption{The bias and on the infered lensing power spectrum amplitude, $\Alens$, predicted from the \websky\ and S10 simulations.}
+\label{tab:Alensbias}
+\end{table*}
 
 
 
